@@ -226,8 +226,7 @@ int main() {
   data3.data.jadwal = "2022-10-09";
   data3.data.kapasitas = 40;
   data3.next = NULL;
-	// bool ulangi = true;
-	bool ulangi = false;
+	bool ulangi = true;
 	while (ulangi){
 		clearScreen();
 
