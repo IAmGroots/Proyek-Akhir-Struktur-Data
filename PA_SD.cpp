@@ -141,6 +141,7 @@ int jumlahNode(string jenis){
 }
 
 void menuUser(){
+	// menunya belum diatur
 	clearScreen();
 
 	string pilihan;
@@ -154,6 +155,7 @@ void menuUser(){
 }
 
 void menuAdmin(){
+	// menunya belum diatur
 	clearScreen();
 
 	string pilihan;
