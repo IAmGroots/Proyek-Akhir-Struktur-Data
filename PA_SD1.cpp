@@ -534,6 +534,30 @@ void addjadwal(NodeJadwal **HEAD_JADWAL, NodeJadwal **TAIL_JADWAL){
     *TAIL_JADWAL = NodeBaru;
 }
 
+void updatejadwal(NodeJadwal **HEAD_JADWAL){
+	int ID = -1;
+	NodeJadwal *temp = *HEAD_JADWAL;
+	clearScreen();
+	tabel("jadwal");
+	cout<<"\nSilahkan Tekan Enter Untuk Kembali...";
+	getchar();
+	masukkanID:
+		cout << "Masukkan ID >> "; cin >> ID;
+		for (int i = 1; i < ID; i++){
+			temp = temp->next;
+		}
+		if (temp->data.id_jadwal == ID){
+			cout << "Masukkan Maskapai >> "; fflush(stdin); getline(cin, temp->data.maskapai); cin.sync();
+			cout << "Masukkan Asal Keberangkatan >> "; fflush(stdin); getline(cin, temp->data.asal); cin.sync();
+			cout << "Masukkan Tujuan >> "; fflush(stdin); getline(cin, temp->data.tujuan); cin.sync();
+			cout << "Masukkan Jadwal Penerbangan >> "; fflush(stdin); getline(cin, temp->data.jadwal); cin.sync();
+			cout << "Masukkan Kapasitas >> "; cin >> temp->data.kapasitas;
+		} else {
+			cout << "ID Tidak Terdaftar, Silakan Gunakan ID Yang Sudah Terdaftar" << endl;
+			goto masukkanID;
+		}
+}
+
 void menuAdmin()
 {
 	clearScreen();
@@ -570,7 +594,7 @@ void menuAdmin()
 		addjadwal(&HEAD_JADWAL, &TAIL_JADWAL);
 	}
 	else if (pilihan == "6"){
-
+		updatejadwal(&HEAD_JADWAL);
 	}
 	else if (pilihan == "7"){
 
