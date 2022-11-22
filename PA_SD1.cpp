@@ -750,11 +750,12 @@ void updatejadwal(NodeJadwal **HEAD_JADWAL){
 	cout<<"Silahkan Tekan Enter Untuk Kembali...";
 	getchar();
 	masukkanID:
+		cout << "-<{=- Update Jadwal! -=}>-" << endl;
 		cout << "Masukkan ID >> "; cin >> ID;
 		if (ID <= jumlahNode("jadwal") && ID > 0){
-		for (int i = 1; i < ID; i++){
-			temp = temp->next;
-		}
+			for (int i = 1; i < ID; i++) {
+				temp = temp->next;
+			}
 			cout << "Masukkan Maskapai >> "; fflush(stdin); getline(cin, temp->data.maskapai); cin.sync();
 			cout << "Masukkan Asal Keberangkatan >> "; fflush(stdin); getline(cin, temp->data.asal); cin.sync();
 			cout << "Masukkan Tujuan >> "; fflush(stdin); getline(cin, temp->data.tujuan); cin.sync();
@@ -767,6 +768,70 @@ void updatejadwal(NodeJadwal **HEAD_JADWAL){
 			cout<<"Silahkan Tekan Enter Untuk Melanjutkan..."; getchar();
 			updatejadwal(HEAD_JADWAL);
 		}
+}
+
+void hapusjadwal(NodeJadwal **HEAD_JADWAL){
+	NodeJadwal *hapus = *HEAD_JADWAL;
+    *HEAD_JADWAL = (*HEAD_JADWAL)->next;
+    (*HEAD_JADWAL)->prev = NULL;
+    delete hapus;
+}
+
+void hapusjadwallast(NodeJadwal **HEAD_JADWAL, NodeJadwal **TAIL_JADWAL){
+	NodeJadwal *temp = *TAIL_JADWAL;
+    if ((*HEAD_JADWAL)->next == NULL){
+        NodeJadwal *del = *HEAD_JADWAL;
+        *HEAD_JADWAL = NULL;
+        *TAIL_JADWAL = NULL;
+        delete del;
+    } else {
+        NodeJadwal *hapus = *TAIL_JADWAL;
+        *TAIL_JADWAL = (*TAIL_JADWAL)->prev;
+        (*TAIL_JADWAL)->next = NULL;
+        // menghapus node
+        delete hapus;
+    }
+}
+
+void hapusjadwalspesifik(NodeJadwal **HEAD_JADWAL, NodeJadwal **TAIL_JADWAL){
+    int nomor, index = 1;
+    NodeJadwal *temp_hapus = *HEAD_JADWAL;
+    if (jumlahNode("jadwal") >= 1){
+        tabel("jadwal");
+        cout << "Menghapus Jadwal Nomor >> " ; cin >> nomor;
+        if (nomor < 1 || nomor > jumlahNode("jadwal")){
+            cout << "\nTolong Masukkan Nomor Dengan Benar...";
+
+        } else if (nomor == 1) {
+			*HEAD_JADWAL = (*HEAD_JADWAL)->next;
+			(*HEAD_JADWAL)->prev = NULL;
+			delete temp_hapus;
+
+        } else if (nomor == jumlahNode("jadwal")) {
+			if ((*HEAD_JADWAL)->next == NULL){
+				*HEAD_JADWAL = NULL;
+				*TAIL_JADWAL = NULL;
+				delete temp_hapus;
+			} else {
+				*TAIL_JADWAL = (*TAIL_JADWAL)->prev;
+				(*TAIL_JADWAL)->next = NULL;
+				delete temp_hapus;
+			}
+
+        } else {
+            while (index < nomor){
+                temp_hapus = temp_hapus->next;
+                index += 1;
+            }
+            temp_hapus->prev->next = temp_hapus->next;
+            temp_hapus->next->prev = temp_hapus->prev;
+            delete temp_hapus;
+            cout << "\nData Berhasil Dihapus, Tekan ENTER Untuk Melanjutkan..." ;
+        }
+
+    } else {
+        cout << "\nMohon Maaf, Jadwal Kosong...";
+    }
 }
 
 void menuAdmin()
@@ -809,7 +874,7 @@ void menuAdmin()
 		updatejadwal(&HEAD_JADWAL);
 	}
 	else if (pilihan == "7"){
-
+		hapusjadwalspesifik(&HEAD_JADWAL, &TAIL_JADWAL);
 	}
 	else if (pilihan == "8"){
 
@@ -935,10 +1000,8 @@ void login(NodeUser *head){
 	bool ulangi = true;
 	string email, password;
 	while (ulangi){
-		cout << "" << endl;
-		cout << "LOGIN USER" << endl;
-		cout << "" << endl;
-		cout<<"Email >> ";
+		cout << "\nLOGIN USER" << endl;
+		cout<<"\nEmail >> ";
 		getline(cin, email); cin.sync();
 		cout<<"Password >> ";
 		getline(cin, password); cin.sync();
