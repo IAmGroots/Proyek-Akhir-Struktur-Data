@@ -2,6 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <map>
+#include <stdlib.h>
 using namespace std;
 
 struct user
@@ -535,7 +536,7 @@ void addjadwal(NodeJadwal **HEAD_JADWAL, NodeJadwal **TAIL_JADWAL){
 }
 
 void updatejadwal(NodeJadwal **HEAD_JADWAL){
-	int ID = -1;
+	int ID ;
 	NodeJadwal *temp = *HEAD_JADWAL;
 	clearScreen();
 	tabel("jadwal");
@@ -543,19 +544,25 @@ void updatejadwal(NodeJadwal **HEAD_JADWAL){
 	getchar();
 	masukkanID:
 		cout << "Masukkan ID >> "; cin >> ID;
+		if (ID <= jumlahNode("jadwal") && ID > 0){
 		for (int i = 1; i < ID; i++){
 			temp = temp->next;
 		}
-		if (temp->data.id_jadwal == ID){
 			cout << "Masukkan Maskapai >> "; fflush(stdin); getline(cin, temp->data.maskapai); cin.sync();
 			cout << "Masukkan Asal Keberangkatan >> "; fflush(stdin); getline(cin, temp->data.asal); cin.sync();
 			cout << "Masukkan Tujuan >> "; fflush(stdin); getline(cin, temp->data.tujuan); cin.sync();
 			cout << "Masukkan Jadwal Penerbangan >> "; fflush(stdin); getline(cin, temp->data.jadwal); cin.sync();
 			cout << "Masukkan Kapasitas >> "; cin >> temp->data.kapasitas;
+			cout<<"Silahkan Tekan Enter Untuk Melanjutkan..."; getchar();
 		} else {
+			system("pause");
 			cout << "ID Tidak Terdaftar, Silakan Gunakan ID Yang Sudah Terdaftar" << endl;
-			goto masukkanID;
+			cout<<"Silahkan Tekan Enter Untuk Melanjutkan..."; getchar();
+			updatejadwal(HEAD_JADWAL);
 		}
+			
+			
+		
 }
 
 void menuAdmin()
@@ -879,4 +886,5 @@ int main()
 	data3.data.kapasitas = 40;
 	data3.next = NULL;
 	menuAwal();
+	return 0;
 }
