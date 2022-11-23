@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <map>
 #include <sstream>
-#include <stdlib.h>
 using namespace std;
 
 struct user
@@ -106,88 +105,62 @@ void menuUser();
 void daftarPesananUser();
 void pemesanan(NodePesanan **head, NodePesanan **tail);
 
+map<string, string> userAktif;
+
 // QuickSort Start
-struct NodeJadwal *getTail(struct NodeJadwal *cur)
+void swap( NodeJadwal* data1, NodeJadwal* data2 )
+{ NodeJadwal t;
+	t = *data1; 
+	*data1 = *data2; 
+	*data2 = t; }
+
+NodeJadwal *lastNode(NodeJadwal *root)
 {
-  while (cur != NULL && cur->next != NULL)
-  {
-    cur = cur->next;
-  }
-  return cur;
+	while (root->next != NULL)
+		root = root->next;
+	return root;
 }
 
-struct NodeJadwal *partition(struct NodeJadwal *head, struct NodeJadwal *tail, struct NodeJadwal **newHead, struct NodeJadwal **newEnd)
+NodeJadwal* partition(NodeJadwal *head, NodeJadwal *tail)
 {
-  struct NodeJadwal *prev = NULL, *cur = head, *pivot = tail;
-  while (cur != pivot)
-  {
-    if (cur->data.jadwal < pivot->data.jadwal)
-    {
-      if ((*newHead) == NULL)
-      {
-        (*newHead) = cur;
-      }
-      prev = cur;
-      cur = cur->next;
-    }
-    else
-    {
-      if (prev)
-      {
-        prev->next = cur->next;
-      }
-      struct NodeJadwal *tmp = cur->next;
-      cur->next = NULL;
-      tail->next = cur;
-      tail = cur;
-      cur = tmp;
-    }
-  }
-  if ((*newHead) == NULL)
-  {
-    (*newHead) = pivot;
-  }
-  (*newEnd) = tail;
-  return pivot;
+	// Set pivot as head element
+	string pivot = tail->data.jadwal;
+	// Similar to i = l-1 for array implementation
+	NodeJadwal *i = head->prev;
+	// Similar to "for (int j = l; j <= h- 1; j++)"
+	for (NodeJadwal *j = head; j != tail; j = j->next)
+	{
+		if (j->data.jadwal <= pivot)
+		{
+			// Similar to i++ for array
+			i = (i == NULL)? head : i->next;
+			swap((i->data), (j->data));
+		}
+	}
+	i = (i == NULL)? head : i->next; // Similar to i++
+	swap((i->data), (tail->data));
+	return i;
 }
 
-struct NodeJadwal *quickSortRecur(struct NodeJadwal *head, struct NodeJadwal *tail)
+void quickSortRecursive(NodeJadwal *head, NodeJadwal *tail)
 {
-  if (!head || head == tail)
-  {
-    return head;
-  }
-  NodeJadwal *newHead = NULL, *newEnd = NULL;
-  struct NodeJadwal *pivot = partition(head, tail, &newHead, &newEnd);
-  if (newHead != pivot)
-  {
-    struct NodeJadwal *tmp = newHead;
-    while (tmp->next != pivot)
-    {
-      tmp = tmp->next;
-      tmp->next = NULL;
-      newHead = quickSortRecur(newHead, tmp);
-      tmp = getTail(newHead);
-      tmp->next = pivot;
-    }
-  }
-  pivot->next = quickSortRecur(pivot->next, newEnd);
-
-  return newHead;
+	if (tail != NULL && head != tail && head != tail->next)
+	{
+		NodeJadwal *partisi = partition(head, tail);
+		quickSortRecursive(head, partisi->prev);
+		quickSortRecursive(partisi->next, tail);
+	}
 }
 
-void quickSort(struct NodeJadwal **headRef)
+void quickSort(NodeJadwal *head)
 {
-  (*headRef) = quickSortRecur(*headRef, getTail(*headRef));
-	TAIL_JADWAL = getTail(*headRef);
-	cout<<TAIL_JADWAL->data.maskapai<<endl;
-	cout<<""<<endl;
-	cout<<getTail(*headRef)->data.maskapai<<endl;
-	getchar();
+	// Find last node
+	NodeJadwal *tail = lastNode(head);
+
+	// Call the recursive QuickSort
+	quickSortRecursive(head, tail);
 }
 // QuickSort End
-
-map<string, string> userAktif;
 
 // Untuk membersihkan layar
 void clearScreen()
@@ -359,6 +332,7 @@ int panjangData(string jenis, string data){
 			head = head->next;
 		}
 	}
+	// cout<<head->data.maskapai<<endl;
 	// Untuk mengembalikan data terpanjang pada suatu atribut
 	return panjang;
 }
@@ -448,7 +422,7 @@ void tabel(string jenis)
 	}
 
 	if (jenis == "jadwal"){
-		quickSort(&HEAD_JADWAL);
+		quickSort(HEAD_JADWAL);
 		NodeJadwal *head = HEAD_JADWAL;
 		if (head == NULL){
 			cout<< "" << endl;
@@ -1415,6 +1389,7 @@ void editJadwal(NodeJadwal **head, NodeJadwal **tail){
   bool loop = true;
   string tanggal, kapasitas;
   while (loop){
+    cout << ""<<endl; 
     cout << "Nama Maskapai >> "; 
     getline(cin, temp->data.maskapai);
     cout << "Asal Keberangkatan >> "; 
@@ -1471,12 +1446,10 @@ void editJadwal(NodeJadwal **head, NodeJadwal **tail){
 			clearScreen();
 			continue;
 		}
-    int tanggalValid, kapasitasValid;
-    stringstream swapTanggal(tanggal);
+    int kapasitasValid;
     stringstream swapKapasitas(kapasitas);
-    swapTanggal >> tanggalValid;
     swapKapasitas >> kapasitasValid;
-    temp->data.jadwal = tanggalValid;
+    temp->data.jadwal = tanggal;
     temp->data.kapasitas = kapasitasValid;
     cout << "" << endl;
     cout << "Jadwal Berhasil Diubah" << endl;
@@ -1563,52 +1536,25 @@ void hapusJadwal(NodeJadwal **head, NodeJadwal **tail){
       delete del;
     }
   }
-  else if (pilihanValid == jumlahNode("jadwal") && pilihanValid > 1)
+  else if (pilihanValid == jumlahNode("jadwal"))
   {
-    if ((*head)->next == NULL)
-    {
-      NodeJadwal *del = *head;
-			NodePesanan *cekJadwal = HEAD_PESANAN;
-			while (cekJadwal != NULL){
-				if (cekJadwal->data.maskapai == del->data.maskapai){
-					cout << "" << endl;
-					cout << "Jadwal Tidak Dapat Dihapus" << endl;
-					cout << "" << endl;
-					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
-					cout << "" << endl;
-					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
-					getchar();
-					return;
-				}
-				cekJadwal = cekJadwal->next;
+		NodeJadwal *del = *tail;
+		NodePesanan *cekJadwal = HEAD_PESANAN;
+		while (cekJadwal != NULL){
+			if (cekJadwal->data.maskapai == del->data.maskapai){
+				cout << "" << endl;
+				cout << "Jadwal Tidak Dapat Dihapus" << endl;
+				cout << "" << endl;
+				cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+				cout << "" << endl;
+				cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+				getchar();
+				return;
 			}
-      *head = NULL;
-      *tail = NULL;
-      delete del;
-    }
-    else
-    {
-			NodeJadwal *del = *tail;
-			NodePesanan *cekJadwal = HEAD_PESANAN;
-			while (cekJadwal != NULL){
-				if (cekJadwal->data.maskapai == del->data.maskapai){
-					cout << "" << endl;
-					cout << "Jadwal Tidak Dapat Dihapus" << endl;
-					cout << "" << endl;
-					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
-					cout << "" << endl;
-					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
-					getchar();
-					return;
-				}
-				cekJadwal = cekJadwal->next;
-			}
-			*tail = (*tail)->prev;
-      (*tail)->next = NULL;
-      delete del;
-			tabel("jadwal");
-			getchar();
-    }
+			cekJadwal = cekJadwal->next;
+		}
+		*tail = (*tail)->prev;
+		(*tail)->next = NULL;
   }
   else {
 		int nomor = 1;
@@ -1669,13 +1615,13 @@ int main()
   pesanan1.prev = NULL;
   pesanan1.data.user = "Asep";
   pesanan1.data.jumlahTiket = 3;
-  pesanan1.data.maskapai = "Batik Air";
+  pesanan1.data.maskapai = "Garuda Indonesia";
   pesanan1.data.jadwalPenerbangan = "2022-09-10";
   pesanan1.data.status = "Menunggu";
   pesanan1.next = NULL;
 
 	jadwal1.prev = NULL;
-	jadwal1.data.maskapai = "Lion Air";
+	jadwal1.data.maskapai = "Garuda Indonesia";
 	jadwal1.data.asal = "Jakarta";
 	jadwal1.data.tujuan = "Balikpapan";
 	jadwal1.data.jadwal = "2022-09-10";
@@ -1684,8 +1630,8 @@ int main()
 
 	jadwal2.prev = &jadwal1;
 	jadwal2.data.maskapai = "Batik Air";
-	jadwal2.data.asal = "Bali";
-	jadwal2.data.tujuan = "Singapura";
+	jadwal2.data.asal = "Denpasar";
+	jadwal2.data.tujuan = "Bengkulu";
 	jadwal2.data.jadwal = "2022-11-11";
 	jadwal2.data.kapasitas = 70;
 	jadwal2.next = &jadwal3;
@@ -1699,23 +1645,20 @@ int main()
 	jadwal3.next = &jadwal4;
 
 	jadwal4.prev = &jadwal3;
-	jadwal4.data.maskapai = "Sriwijayaasas Air";
-	jadwal4.data.asal = "Samarinasada";
-	jadwal4.data.tujuan = "Padasang";
-	jadwal4.data.jadwal = "2022-11-09";
+	jadwal4.data.maskapai = "Citilink";
+	jadwal4.data.asal = "Surabaya";
+	jadwal4.data.tujuan = "Pontianak";
+	jadwal4.data.jadwal = "2022-10-10";
 	jadwal4.data.kapasitas = 40;
 	jadwal4.next = NULL;
-	nextIdJadwal = jumlahNode("jadwal");
 
-	// quickSort(&HEAD_JADWAL);
-	// tabel("jadwal");
   // Menu Awal [DONE]
-	// menuAwal();
+	menuAwal();
 
   // Menu User [-1]
   // menuUser();
 
   // Menu Admin [-2]
-  menuAdmin();
+  // menuAdmin();
 	return 0;
 }
