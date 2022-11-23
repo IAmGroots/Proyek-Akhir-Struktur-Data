@@ -68,8 +68,9 @@ NodePesanan *TAIL_PESANAN = &pesanan1;
 NodeJadwal jadwal1;
 NodeJadwal jadwal2;
 NodeJadwal jadwal3;
+NodeJadwal jadwal4;
 NodeJadwal *HEAD_JADWAL = &jadwal1;
-NodeJadwal *TAIL_JADWAL = &jadwal3;
+NodeJadwal *TAIL_JADWAL = &jadwal4;
 
 
 NodeUser *newUser();
@@ -171,17 +172,22 @@ struct NodeJadwal *quickSortRecur(struct NodeJadwal *head, struct NodeJadwal *ta
     }
   }
   pivot->next = quickSortRecur(pivot->next, newEnd);
+
   return newHead;
 }
 
 void quickSort(struct NodeJadwal **headRef)
 {
   (*headRef) = quickSortRecur(*headRef, getTail(*headRef));
+	TAIL_JADWAL = getTail(*headRef);
+	cout<<TAIL_JADWAL->data.maskapai<<endl;
+	cout<<""<<endl;
+	cout<<getTail(*headRef)->data.maskapai<<endl;
+	getchar();
 }
 // QuickSort End
 
 map<string, string> userAktif;
-int nextIdJadwal;
 
 // Untuk membersihkan layar
 void clearScreen()
@@ -399,15 +405,15 @@ void tabel(string jenis)
 			cout<<" "<< endl;
 			cout<<baris<<endl;
 			cout<< left << satuPerDuaBaris << " ";
-			cout<< left << setw(9) << "DATA USER =";
+			cout<< left << setw(9) << "DATA USER =";system("color 01");
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNama) << "Nama Lengkap" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgPassword) << "Password" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgEmail) << "Email" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNoHp) << "No Hp" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAlamat) << "Alamat" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgNama) << "Nama Lengkap" << " ";
+			cout<<"| " << left << setw(pjgPassword) << "Password" << " ";
+			cout<<"| " << left << setw(pjgEmail) << "Email" << " ";
+			cout<<"| " << left << setw(pjgNoHp) << "No Hp" << " ";
+			cout<<"| " << left << setw(pjgAlamat) << "Alamat" << " |" << endl;
 			cout<<baris<<endl;
 		}
 		else {
@@ -415,26 +421,26 @@ void tabel(string jenis)
 			cout<<" "<< endl;
 			cout<<baris<<endl;
 			cout<< left << satuPerDuaBaris << " ";
-			cout<< left << setw(9) << "DATA USER ";
+			cout<< left << setw(9) << "DATA USER ";system("color 01");
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNama) << "Nama Lengkap" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgPassword) << "Password" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgEmail) << "Email" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNoHp) << "No Hp" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAlamat) << "Alamat" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgNama) << "Nama Lengkap" << " ";
+			cout<<"| " << left << setw(pjgPassword) << "Password" << " ";
+			cout<<"| " << left << setw(pjgEmail) << "Email" << " ";
+			cout<<"| " << left << setw(pjgNoHp) << "No Hp" << " ";
+			cout<<"| " << left << setw(pjgAlamat) << "Alamat" << " |" << endl;
 			cout<<baris<<endl;
 		}
 
 		int nomor = 1;
 		while(sementara != NULL){
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << nomor << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNama) << sementara->data.nama_lengkap << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgPassword) << sementara->data.password << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgEmail) << sementara->data.email << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgNoHp) << sementara->data.no_hp << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAlamat) << sementara->data.alamat << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << nomor << " ";
+			cout<<"| " << left << setw(pjgNama) << sementara->data.nama_lengkap << " ";
+			cout<<"| " << left << setw(pjgPassword) << sementara->data.password << " ";
+			cout<<"| " << left << setw(pjgEmail) << sementara->data.email << " ";
+			cout<<"| " << left << setw(pjgNoHp) << sementara->data.no_hp << " ";
+			cout<<"| " << left << setw(pjgAlamat) << sementara->data.alamat << " |" << endl;
 			cout<<baris<<endl;
 			nomor++;
 			sementara = sementara->next;
@@ -442,7 +448,7 @@ void tabel(string jenis)
 	}
 
 	if (jenis == "jadwal"){
-    quickSort(&HEAD_JADWAL);
+		quickSort(&HEAD_JADWAL);
 		NodeJadwal *head = HEAD_JADWAL;
 		if (head == NULL){
 			cout<< "" << endl;
@@ -485,12 +491,12 @@ void tabel(string jenis)
 			cout<< left << setw(9) << "JADWAL PENERBANGAN ";
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAsal) << "Asal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTujuan) << "Tujuan" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgKapasitas) << "Kapasitas" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+			cout<<"| " << left << setw(pjgAsal) << "Asal" << " ";
+			cout<<"| " << left << setw(pjgTujuan) << "Tujuan" << " ";
+			cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+			cout<<"| " << left << setw(pjgKapasitas) << "Kapasitas" << " |" << endl;
 			cout<<baris<<endl;
 		}
 		else {
@@ -501,23 +507,23 @@ void tabel(string jenis)
 			cout<< left << setw(9) << "JADWAL PENERBANGAN =";
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAsal) << "Asal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTujuan) << "Tujuan" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgKapasitas) << "Kapasitas" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+			cout<<"| " << left << setw(pjgAsal) << "Asal" << " ";
+			cout<<"| " << left << setw(pjgTujuan) << "Tujuan" << " ";
+			cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+			cout<<"| " << left << setw(pjgKapasitas) << "Kapasitas" << " |" << endl;
 			cout<<baris<<endl;
 		}
 
 		int nomor = 1;
 		while(sementara != NULL){
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << nomor << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << sementara->data.maskapai << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgAsal) << sementara->data.asal << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTujuan) << sementara->data.tujuan << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << sementara->data.jadwal << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgKapasitas) << sementara->data.kapasitas << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << nomor << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << sementara->data.maskapai << " ";
+			cout<<"| " << left << setw(pjgAsal) << sementara->data.asal << " ";
+			cout<<"| " << left << setw(pjgTujuan) << sementara->data.tujuan << " ";
+			cout<<"| " << left << setw(pjgJadwal) << sementara->data.jadwal << " ";
+			cout<<"| " << left << setw(pjgKapasitas) << sementara->data.kapasitas << " |" << endl;
 			cout<<baris<<endl;
 			nomor++;
 			sementara = sementara->next;
@@ -567,12 +573,12 @@ void tabel(string jenis)
 			cout<< left << setw(9) << "INFORMASI PEMESANAN =";
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << "Nama Lengkap" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << "Tiket" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << "Status" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgUser) << "Nama Lengkap" << " ";
+			cout<<"| " << left << setw(pjgTiket) << "Tiket" << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+			cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+			cout<<"| " << left << setw(pjgStatus) << "Status" << " |" << endl;
 			cout<<baris<<endl;
 		}
 		else {
@@ -583,23 +589,23 @@ void tabel(string jenis)
 			cout<< left << setw(9) << "INFORMASI PEMESANAN ";
 			cout<< left << satuPerDuaBaris << endl;
 			cout<<baris<<endl;
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << "Nama Lengkap" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << "Tiket" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << "Status" << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << "No" << " ";
+			cout<<"| " << left << setw(pjgUser) << "Nama Lengkap" << " ";
+			cout<<"| " << left << setw(pjgTiket) << "Tiket" << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+			cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+			cout<<"| " << left << setw(pjgStatus) << "Status" << " |" << endl;
 			cout<<baris<<endl;
 		}
 
 		int nomor = 1;
 		while(sementara != NULL){
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << nomor << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << sementara->data.user << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << sementara->data.jumlahTiket << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << sementara->data.maskapai << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << sementara->data.jadwalPenerbangan << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << sementara->data.status << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << nomor << " ";
+			cout<<"| " << left << setw(pjgUser) << sementara->data.user << " ";
+			cout<<"| " << left << setw(pjgTiket) << sementara->data.jumlahTiket << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << sementara->data.maskapai << " ";
+			cout<<"| " << left << setw(pjgJadwal) << sementara->data.jadwalPenerbangan << " ";
+			cout<<"| " << left << setw(pjgStatus) << sementara->data.status << " |" << endl;
 			cout<<baris<<endl;
 			nomor++;
 			sementara = sementara->next;
@@ -876,6 +882,7 @@ void menuUser()
 // Lihat Jadwal Admin dan User Start
 void lihatJadwal(){
 	clearScreen();
+	// quickSort(&HEAD_JADWAL);
 	tabel("jadwal");
 	cout<<""<<endl;
 	cout<<"Silahkan Tekan Enter Untuk Kembali...";
@@ -954,12 +961,12 @@ void daftarPesananUser(){
 		cout<< left << setw(9) << "INFORMASI PEMESANAN =";
 		cout<< left << satuPerDuaBaris << endl;
 		cout<<baris<<endl;
-		cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << "Nama Lengkap" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << "Tiket" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << "Status" << " |" << endl;
+		cout<<"| " << left << setw(pjgId) << "No" << " ";
+		cout<<"| " << left << setw(pjgUser) << "Nama Lengkap" << " ";
+		cout<<"| " << left << setw(pjgTiket) << "Tiket" << " ";
+		cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+		cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+		cout<<"| " << left << setw(pjgStatus) << "Status" << " |" << endl;
 		cout<<baris<<endl;
 	}
 	else {
@@ -970,12 +977,12 @@ void daftarPesananUser(){
 		cout<< left << setw(9) << "INFORMASI PEMESANAN ";
 		cout<< left << satuPerDuaBaris << endl;
 		cout<<baris<<endl;
-		cout<<"| " << setiosflags(ios::left) << setw(pjgId) << "No" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << "Nama Lengkap" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << "Tiket" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << "Maskapai" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << "Jadwal" << " ";
-		cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << "Status" << " |" << endl;
+		cout<<"| " << left << setw(pjgId) << "No" << " ";
+		cout<<"| " << left << setw(pjgUser) << "Nama Lengkap" << " ";
+		cout<<"| " << left << setw(pjgTiket) << "Tiket" << " ";
+		cout<<"| " << left << setw(pjgMaskapai) << "Maskapai" << " ";
+		cout<<"| " << left << setw(pjgJadwal) << "Jadwal" << " ";
+		cout<<"| " << left << setw(pjgStatus) << "Status" << " |" << endl;
 		cout<<baris<<endl;
 	}
 
@@ -983,15 +990,15 @@ void daftarPesananUser(){
 	int nomor = 1;
 	while(sementara != NULL){
 		if (sementara->data.user == namaUser){
-			cout<<"| " << setiosflags(ios::left) << setw(pjgId) << nomor << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgUser) << sementara->data.user << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgTiket) << sementara->data.jumlahTiket << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgMaskapai) << sementara->data.maskapai << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgJadwal) << sementara->data.jadwalPenerbangan << " ";
-			cout<<"| " << setiosflags(ios::left) << setw(pjgStatus) << sementara->data.status << " |" << endl;
+			cout<<"| " << left << setw(pjgId) << nomor << " ";
+			cout<<"| " << left << setw(pjgUser) << sementara->data.user << " ";
+			cout<<"| " << left << setw(pjgTiket) << sementara->data.jumlahTiket << " ";
+			cout<<"| " << left << setw(pjgMaskapai) << sementara->data.maskapai << " ";
+			cout<<"| " << left << setw(pjgJadwal) << sementara->data.jadwalPenerbangan << " ";
+			cout<<"| " << left << setw(pjgStatus) << sementara->data.status << " |" << endl;
 			cout<<baris<<endl;
+			nomor++;
 		}
-		nomor++;
 		sementara = sementara->next;
 	}
 	cout << "" << endl;
@@ -1279,7 +1286,7 @@ NodeJadwal *newJadwal(){
     bool valid = true;
     if (tanggal[4] != '-' || tanggal[7] != '-' || tanggal.length() != 10){
       cout<<""<<endl;
-      cout<<"Format Tanggal Salah (Wajib YYYY-MM--DD)"<<endl;
+      cout<<"Format Tanggal Salah (Wajib YYYY-MM-DD)"<<endl;
       cout<<""<<endl;
       cout<<"Silahkan Tekan Enter Untuk Melanjutkan...";
       getchar();
@@ -1323,12 +1330,11 @@ NodeJadwal *newJadwal(){
 			clearScreen();
 			continue;
 		}
-    int tanggalValid, kapasitasValid;
-    stringstream swapTanggal(tanggal);
+    int kapasitasValid;
     stringstream swapKapasitas(kapasitas);
-    swapTanggal >> tanggalValid;
     swapKapasitas >> kapasitasValid;
-    NodeBaru->data.jadwal = tanggalValid;
+		// DIsini
+    NodeBaru->data.jadwal = tanggal;
     NodeBaru->data.kapasitas = kapasitasValid;
     return NodeBaru;
   }
@@ -1370,7 +1376,7 @@ void editJadwal(NodeJadwal **head, NodeJadwal **tail){
     getchar();
     return;
   }
-  tabel("jadwal");
+	tabel("jadwal");
   string pilihan;
   cout<<""<<endl;
   cout<<"Silahkan Pilih >> ";
@@ -1390,6 +1396,21 @@ void editJadwal(NodeJadwal **head, NodeJadwal **tail){
   for (int i=1; i<pilihanValid; i++){
     temp = temp->next;
   }
+
+	NodePesanan *cekJadwal = HEAD_PESANAN;
+	while (cekJadwal != NULL){
+		if (cekJadwal->data.maskapai == temp->data.maskapai){
+			cout << "" << endl;
+			cout << "Jadwal Tidak Dapat Diedit" << endl;
+			cout << "" << endl;
+			cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+			cout << "" << endl;
+			cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+			getchar();
+			return;
+		}
+		cekJadwal = cekJadwal->next;
+	}
 
   bool loop = true;
   string tanggal, kapasitas;
@@ -1480,7 +1501,7 @@ void hapusJadwal(NodeJadwal **head, NodeJadwal **tail){
     getchar();
     return;
   }
-  tabel("jadwal");
+	tabel("jadwal");
   string pilihan;
   cout<<""<<endl;
   cout<<"Silahkan Pilih >> ";
@@ -1502,6 +1523,20 @@ void hapusJadwal(NodeJadwal **head, NodeJadwal **tail){
     if ((*head)->next == NULL)
     {
       NodeJadwal *del = *head;
+			NodePesanan *cekJadwal = HEAD_PESANAN;
+			while (cekJadwal != NULL){
+				if (cekJadwal->data.maskapai == del->data.maskapai){
+					cout << "" << endl;
+					cout << "Jadwal Tidak Dapat Dihapus" << endl;
+					cout << "" << endl;
+					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+					cout << "" << endl;
+					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+					getchar();
+					return;
+				}
+				cekJadwal = cekJadwal->next;
+			}
       *head = NULL;
       *tail = NULL;
       delete del;
@@ -1509,39 +1544,108 @@ void hapusJadwal(NodeJadwal **head, NodeJadwal **tail){
     else
     {
       NodeJadwal *del = *head;
+			NodePesanan *cekJadwal = HEAD_PESANAN;
+			while (cekJadwal != NULL){
+				if (cekJadwal->data.maskapai == del->data.maskapai){
+					cout << "" << endl;
+					cout << "Jadwal Tidak Dapat Dihapus" << endl;
+					cout << "" << endl;
+					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+					cout << "" << endl;
+					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+					getchar();
+					return;
+				}
+				cekJadwal = cekJadwal->next;
+			}
       *head = (*head)->next;
       (*head)->prev = NULL;
       delete del;
     }
   }
-  else if (pilihanValid == jumlahNode("jadwal"))
+  else if (pilihanValid == jumlahNode("jadwal") && pilihanValid > 1)
   {
     if ((*head)->next == NULL)
     {
       NodeJadwal *del = *head;
+			NodePesanan *cekJadwal = HEAD_PESANAN;
+			while (cekJadwal != NULL){
+				if (cekJadwal->data.maskapai == del->data.maskapai){
+					cout << "" << endl;
+					cout << "Jadwal Tidak Dapat Dihapus" << endl;
+					cout << "" << endl;
+					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+					cout << "" << endl;
+					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+					getchar();
+					return;
+				}
+				cekJadwal = cekJadwal->next;
+			}
       *head = NULL;
       *tail = NULL;
       delete del;
     }
     else
     {
-      NodeJadwal *del = *tail;
-      *tail = (*tail)->prev;
+			NodeJadwal *del = *tail;
+			NodePesanan *cekJadwal = HEAD_PESANAN;
+			while (cekJadwal != NULL){
+				if (cekJadwal->data.maskapai == del->data.maskapai){
+					cout << "" << endl;
+					cout << "Jadwal Tidak Dapat Dihapus" << endl;
+					cout << "" << endl;
+					cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+					cout << "" << endl;
+					cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+					getchar();
+					return;
+				}
+				cekJadwal = cekJadwal->next;
+			}
+			*tail = (*tail)->prev;
       (*tail)->next = NULL;
       delete del;
+			tabel("jadwal");
+			getchar();
     }
   }
   else {
-    NodeJadwal *dataSebelum;
-    NodeJadwal *dataSesudah;
-    for (int i=0; i<pilihanValid; i++){
-      dataSebelum = temp;
-      temp = temp->next;
-      dataSesudah = temp->next;
+		int nomor = 1;
+    NodeJadwal *temporary = *head;
+    NodeJadwal *before;
+    NodeJadwal *data;
+		while (nomor <= pilihanValid)
+    {
+      if (nomor == pilihanValid - 1)
+      {
+        before = temporary;
+      }
+      if (nomor == pilihanValid)
+      {
+        data = temporary;
+      }
+      temporary = temporary->next;
+      nomor++;
     }
-    dataSebelum->next = dataSesudah;
-    dataSesudah->prev = dataSebelum;
-    delete temp;
+
+		NodePesanan *cekJadwal = HEAD_PESANAN;
+		while (cekJadwal != NULL){
+			if (cekJadwal->data.maskapai == data->data.maskapai){
+				cout << "" << endl;
+				cout << "Jadwal Tidak Dapat Dihapus" << endl;
+				cout << "" << endl;
+				cout << "Jadwal Sedang Ada Pada Pesanan" << endl;
+				cout << "" << endl;
+				cout << "Silahkan Tekan Enter Untuk Melanjutkan...";
+				getchar();
+				return;
+			}
+			cekJadwal = cekJadwal->next;
+		}
+		before->next = temporary;
+    temporary->prev = before;
+    delete data;
   }
   cout << "" << endl;
   cout << "Jadwal Berhasil Dihapus" << endl;
@@ -1565,7 +1669,7 @@ int main()
   pesanan1.prev = NULL;
   pesanan1.data.user = "Asep";
   pesanan1.data.jumlahTiket = 3;
-  pesanan1.data.maskapai = "Lion Air";
+  pesanan1.data.maskapai = "Batik Air";
   pesanan1.data.jadwalPenerbangan = "2022-09-10";
   pesanan1.data.status = "Menunggu";
   pesanan1.next = NULL;
@@ -1592,16 +1696,26 @@ int main()
 	jadwal3.data.tujuan = "Padang";
 	jadwal3.data.jadwal = "2022-10-09";
 	jadwal3.data.kapasitas = 40;
-	jadwal3.next = NULL;
+	jadwal3.next = &jadwal4;
+
+	jadwal4.prev = &jadwal3;
+	jadwal4.data.maskapai = "Sriwijayaasas Air";
+	jadwal4.data.asal = "Samarinasada";
+	jadwal4.data.tujuan = "Padasang";
+	jadwal4.data.jadwal = "2022-11-09";
+	jadwal4.data.kapasitas = 40;
+	jadwal4.next = NULL;
 	nextIdJadwal = jumlahNode("jadwal");
 
+	// quickSort(&HEAD_JADWAL);
+	// tabel("jadwal");
   // Menu Awal [DONE]
-	menuAwal();
+	// menuAwal();
 
   // Menu User [-1]
   // menuUser();
 
   // Menu Admin [-2]
-  // menuAdmin();
+  menuAdmin();
 	return 0;
 }
