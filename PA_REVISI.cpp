@@ -88,6 +88,8 @@ void menuAwal();
 void lihatJadwal();
 // OTW
 // void mencariJadwal();
+void FrontBackSplit(NodeJadwal *source, NodeJadwal **frontRef, NodeJadwal **backRef);
+NodeJadwal *SortedMergeMaskapai(NodeJadwal *a, NodeJadwal *b);
 
 // Hanya dapat diakses Admin
 void menuAdmin();
@@ -864,8 +866,107 @@ void lihatJadwal(){
 }
 // Lihat Jadwal Admin dan User End
 
+// Sorting Maskapai yang digunakan untuk searching Start
+void FrontBackSplit(NodeJadwal *source, NodeJadwal **frontRef, NodeJadwal **backRef) {
+    NodeJadwal *fast;
+    NodeJadwal *slow;
+    slow = source;
+    fast = source->next;
+   
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+ 
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
+void MergeSortMaskapai(NodeJadwal **headRef) {
+	NodeJadwal *head = *headRef;
+	NodeJadwal *a;
+	NodeJadwal *b;
+	/* Base case -- length 0 or 1 */
+	if ((head == NULL) || (head->next == NULL)) {
+		return;
+	}
+	/* Split head into 'a' and 'b' sublists */
+	FrontBackSplit(head, &a, &b);
+	/* Recursively sort the sublists */
+	MergeSortMaskapai(&a);
+	MergeSortMaskapai(&b);
+	/* answer = merge the two sorted lists together */
+	*headRef = SortedMergeMaskapai(a, b);
+}
+
+NodeJadwal *SortedMergeMaskapai(NodeJadwal *a, NodeJadwal *b) {
+	NodeJadwal *result = NULL;
+  
+    if (a == NULL)
+        return (b);
+    else if (b == NULL)
+        return (a);
+
+	if (a->data.maskapai <= b->data.maskapai) {
+        result = a;
+        result->next = SortedMergeMaskapai(a->next, b);
+    }
+    else {
+        result = b;
+        result->next = SortedMergeMaskapai(a, b->next);
+    }
+    return (result);
+}
+// Sorting Maskapai yang digunakan untuk searching End
+
 // Mencari Jadwal Admin dan User Start
-// OTW
+int fibonacciSearchMaskapai(NodeJadwal *node, string x, int n) {
+    int F0 = 0; 
+    int F1 = 1; 
+    int F = F0 + F1; 
+    while (F < n){
+        F0 = F1;
+        F1 = F;
+        F = F0 + F1;
+    }
+
+    int offset = -1;
+    int trv = 0;
+
+    while (F > 1){
+    	NodeJadwal *temp = node;
+        int i = min(offset + F0, n - 1);
+        while (temp->next != NULL && trv < i){
+        	temp = temp->next;
+        	trv++;
+		}
+        if (temp->data.maskapai < x){
+            F = F1;
+            F1 = F0;
+            F0 = F - F1;
+            offset = i;
+        }
+        else if (temp->data.maskapai > x){
+            F = F0;
+            F1 = F1 - F0;
+            F0 = F - F1;
+        }
+        else return i;
+        trv = 0;
+    }
+    NodeJadwal *temp2 = node;
+    while (temp2->next != NULL && trv < offset+1){
+        	temp2 = temp2->next;
+        	trv++;
+	}
+    if (F1 && temp2->data.maskapai == x) return offset + 1;
+    return -1;
+}
 // Mencari Jadwal Admin dan User End
 
 // Daftar Pesanan User Start
@@ -1084,8 +1185,7 @@ void pemesanan(NodePesanan **head, NodePesanan **tail){
 // Menu Admin Start
 void menuAdmin()
 {
-	clearScreen();
-
+	// clearScreen();
 	string pilihan;
 	cout << "Menu Admin" << endl;
 	cout << "[1] Melihat Data User" << endl;
@@ -1105,7 +1205,7 @@ void menuAdmin()
 		lihatUser();
 	}
 	else if (pilihan == "2"){
-    konfirmasi();
+    	konfirmasi();
 	}
 	else if (pilihan == "3"){
 
@@ -1116,7 +1216,7 @@ void menuAdmin()
 	}
 	else if (pilihan == "5"){
 		tambahJadwal(&HEAD_JADWAL, &TAIL_JADWAL);
-    menuAdmin();
+    	menuAdmin();
 	}
 	else if (pilihan == "6"){
 		editJadwal(&HEAD_JADWAL, &TAIL_JADWAL);
@@ -1127,7 +1227,18 @@ void menuAdmin()
 		menuAdmin();
 	}
 	else if (pilihan == "8"){
-
+		MergeSortMaskapai(&HEAD_JADWAL);
+		string cari;
+		int panjangjadwal = panjangData("jadwal", "maskapai");
+		cout << "Masukkan Nama Maskapai : "; fflush(stdin); getline(cin, cari);
+		int hasil = fibonacciSearchMaskapai(HEAD_JADWAL, cari, panjangjadwal);
+		if (hasil >= 0) {
+			cout << "Hasil Cari Nama Maskapai " << cari << " ditemukan pada jadwal No. " << hasil+1 << endl;
+		}
+		else {
+			cout << "Hasil Cari Nama Maskapai " << cari << " tidak ada dalam jadwal";
+		}
+		menuAdmin();
 	}
 	else if (pilihan == "0"){
 		cout<<""<<endl;
